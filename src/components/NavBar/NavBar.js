@@ -1,13 +1,14 @@
 import React, { useRef, useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
-import { Button, Form, FormControl, Nav, Navbar } from "react-bootstrap";
+import { Button, Form, FormControl, Nav, NavLink, Navbar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { navbarBrand, navs } from "../../config/config";
 import logoImage from "../Images/logoImage.png";
 import { btnColor, formInput, logo, nav, navBar, navBrand, closeBtn, searchForm } from "./index";
-
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import { UserProfile } from "@clerk/clerk-react";
 function NavBar() {
   const navigate = useNavigate();
 
@@ -32,6 +33,8 @@ function NavBar() {
 
   const isSearchButtonDisabled = searchQuery.trim() === "";
 
+  const [isok, setIsok] = useState(true);
+  const urlSign = "//upward-malamute-18.accounts.dev/sign-in";
   return (
     <>
       <Navbar
@@ -43,8 +46,10 @@ function NavBar() {
         expanded={!isCollapsed}
       >
         <Navbar.Brand style={navBrand} href="/">
-          <img src={logoImage} alt="Logo" style={logo} />
-          {navbarBrand}
+          <NavLink to="/">
+            <img src={logoImage} alt="Logo" style={logo} />
+            {navbarBrand}
+          </NavLink>
         </Navbar.Brand>
         {isCollapsed && (
           <Navbar.Toggle
@@ -62,13 +67,27 @@ function NavBar() {
           />
         )}
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav style={nav} className="mr-auto" onClick={handleNavClick}>
-            {navs.map((navItem) => (
-              <LinkContainer to={navItem.page} key={uuidv4()}>
-                <Nav.Link className="ml-2">{navItem.nav}</Nav.Link>
+          {
+            isok ? <Nav style={nav} className="mr-auto" onClick={handleNavClick}>
+              {navs.map((navItem) => (
+                <LinkContainer to={navItem.page} key={uuidv4()}>
+                  <Nav.Link className="ml-2">{navItem.nav}</Nav.Link>
+                </LinkContainer>
+              ))}
+            </Nav> : <Nav style={nav} className="ml-auto" onClick={handleNavClick}>
+              <LinkContainer to="/" key={uuidv4()}>
+                <Nav.Link className="ml-2">Home</Nav.Link>
               </LinkContainer>
-            ))}
-          </Nav>
+            </Nav>
+          }
+          <SignedOut>
+          <LinkContainer to={urlSign} key={uuidv4()}>
+                <Nav.Link className="ml-2">Signin/Signup</Nav.Link>
+              </LinkContainer>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
           <Form style={searchForm} onSubmit={handleSubmit}>
             <FormControl
               type="text"

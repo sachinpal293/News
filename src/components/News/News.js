@@ -26,6 +26,7 @@ function News(props) {
   const updatenews = async () => {
     try {
       const response = await axios.get(endpointPath(country, category));
+      console.log(response)
       setLoading(true);
       const parsedData = response.data;
       setArticles(parsedData.articles);
@@ -39,13 +40,15 @@ function News(props) {
     updatenews();
     // eslint-disable-next-line
   }, []);
-
+   
+  const [login, setLogin] = useState(true);
   return (
     <>
-      {loading ? (
-        <Loading />
+      {!login ? (
+        console.log("Please Login on this site")
       ) : (
-        <>
+
+        <div>
           <Header>{header(capitaLize(category))}</Header>
           <Container>
             <Row>
@@ -69,7 +72,7 @@ function News(props) {
               })}
             </Row>
           </Container>
-        </>
+        </div>
       )}
     </>
   );

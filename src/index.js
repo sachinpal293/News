@@ -12,7 +12,7 @@ const root = document.getElementById("root");
 const rootElement = createRoot(root);
 
 
-const PUBLISHABLE_KEY = "pk_test_dXB3YXJkLW1hbGFtdXRlLTE4LmNsZXJrLmFjY291bnRzLmRldiQ"
+const PUBLISHABLE_KEY = clerk_API_key
 
 if (!PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key")

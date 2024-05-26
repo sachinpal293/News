@@ -9,7 +9,7 @@ function Card({img, title, description, data, url, category}) {
   const navigate = useNavigate();
   const handleOnClick = ()=>{
      dispatch(setdata(cardData)); 
-     navigate(`/news/${category}`)
+     navigate(`/news/${category}/${title}`)
   }
   return (
     <div className='w-full pr-1 pl-1 mb-4' onClick={handleOnClick}>

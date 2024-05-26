@@ -25,7 +25,9 @@ function News() {
   console.log(postData)
 
   return (
-    <div>News</div>
+    <>
+   
+    </>
   )
 }
 

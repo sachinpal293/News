@@ -1,9 +1,12 @@
 import { VideoAdd } from '@/features/video/videoAdd'
-import React from 'react'
-
+import React, { useState } from 'react'
+import { useParams } from 'react-router-dom';
 function Culture() {
+  const {title} = useParams();
   return (
-    <VideoAdd/>
+    <>
+     <div>Culture {title}</div>
+    </>
   )
 }
 

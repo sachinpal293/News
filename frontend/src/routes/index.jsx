@@ -36,16 +36,23 @@ createRoutesFromElements(
       <Route path="/sign-up" element={<Register/>}/>
       <Route path="/news/business" element={<Business/>}/>
       <Route path="/news/technology" element={<Innovation/>}/>
+      <Route path="/news/technology/:title" element={<Innovation/>}/>
       <Route path="/news/travel" element={<Travel/>}/>
+      <Route path="/news/travel/:title" element={<Travel/>}/>
        <Route path ="/create-post" element={<BePatner/>}/> 
       
       <Route path ="/news/health" element={<Health/>}/>
+      <Route path ="/news/health/:title" element={<Health/>}/>
       <Route path ="/news/video" element={<Video/>}/>
       <Route path="/news/weather" element={<Weather/>}/>
       <Route path="/news/earth" element={<Earth/>}/>
+      <Route path="/news/earth/:title" element={<Earth/>}/>
       <Route path="/news/culture" element={<Culture/>}/>
+      <Route path="/news/culture/:title" element={<Culture/>}/>
       <Route path="/news/sports" element={<Sports/>}/>
+      <Route path="/news/sports/:title" element={<Sports/>}/>
       <Route path="/news/general-election-2024" element={<Election/>}/>
+      <Route path="/news/general-election-2024/:title" element={<Election/>}/>
      </Route>
       
   

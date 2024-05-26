@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 function SubHeader() {
+  
   const isAuth = useSelector(state=> state.auth.isAuthenticated)
+
+  
   console.log(`hum abhi subheader secction me hai ${isAuth}`)
   return (
     <>

@@ -1,16 +1,26 @@
-import Card from '@/components/Card'
 import React from 'react'
+import Hero from './hero'
+import WeRecommend from './WeRecommend'
+import MustWatch from './MustWatch'
+import BusinessHero from '@/components/BusinessHero'
+import CultureHero from '@/components/CultureHero'
+import EditorPicks from '@/components/EditorPicks'
+import EarthHero from '@/components/EarthHero'
+import InnovationHero from '@/components/InnovationHero'
+import ScienceAndHealth from '@/components/ScienceAndHealth'
 
 function Home() {
   return (
-    <div className='flex mr-7'>
-        <div className='w-1/4 border-solid border-2 border-sky-500 p-4'>
-        </div>
-        <div className='w-2/4 border-solid border-2 border-red-500'>
-          <Card/>
-        </div>
-        <div className='w-1/4 border-solid border-2 border-sky-500 p-4'>
-        </div>
+    <div>
+      <Hero/>
+      <WeRecommend/>
+      <MustWatch/>
+      <BusinessHero/>
+      <CultureHero/>
+      <EditorPicks/>
+      <EarthHero/>
+      <InnovationHero/>
+      <ScienceAndHealth/>
     </div>
   )
 }

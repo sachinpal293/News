@@ -7,11 +7,21 @@ import { FaShoppingCart } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { FaNewspaper } from "react-icons/fa6";
 import SubHeader from './subHeader';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '@/features/authSlice';
 
 function Hearder() {
+  const isAuth = useSelector(state=> state.auth.isAuthenticated)
+  const username = useSelector(state=> state.auth.user) 
+  if(isAuth) 
+    {
+  console.log(`hum abhi herader.jsx me hai ${isAuth} and username is ${username.username }`)
+    }
+  // console.log(username)
+ const dispatch = useDispatch();
   return (
     <div>
-    <header className='h-16 shadow-md bg-white'>
+    <header className='h-16 shadow-md bg-white '>
       <div className='h-full container mx-auto flex items-center px-4 justify-between'>
         <div className=''>
           <Link to={"/"} className='flex'>
@@ -30,21 +40,27 @@ function Hearder() {
         
         <div className='flex items-center gap-5'>
 
-        < div className='text-3xl cursor-pointer'>
+        < div className='text-3xl text-center cursor-pointer'>
           <FaRegCircleUser/>
+           <p className='text-sm text-green-500 font-bold'>{isAuth ? username.username :""}</p>
         </div>
 
-        <div className='text-2xl cursor-pointer relative'>
+        {/* <div className='text-2xl cursor-pointer relative'>
           <span><FaShoppingCart/></span>
           <div className='bg-red-600 text-white w-5 h-5 rounded-full p-1 flex items-center justify-center absolute -top-2 -right-2'>
             <p className='text-sm'>0</p>
           </div>
-        </div>
+        </div> */}
 
         <div>
-           <Link to={"login"}>
-           <Button>Login</Button>
-           </Link>
+           {
+           isAuth ? <Link to={"/"}>
+           <Button onClick={()=>dispatch(logout())}>Logout</Button>
+           </Link>:<Link to={"login"}>
+            <Button>Login</Button>
+            </Link>
+            
+           }
         </div>
 
 

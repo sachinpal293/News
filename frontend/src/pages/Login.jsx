@@ -5,9 +5,12 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { login } from '@/features/authSlice';
 
 function Login() {
     const [showPassword, setShowPassword] = useState(false);
+    const dispatch = useDispatch();
     const navigte = useNavigate();
     const [data, setData] = useState({
         email: "",
@@ -26,13 +29,18 @@ function Login() {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('//localhost:8000/api/v1/user/login', {
+        axios.post('//localhost:8080/api/v1/user/login', {
             email: data.email,
             password: data.password
         })
             .then(function (response) {
+                console.log(response)
+                const userdata = {username:response.data.loggedInUser}
+                console.log(userdata)
+                dispatch(login(userdata))
                 navigte("/")
-                console.log(response);
+                console.log(response.statusText);
+                console.log(response.data.data.user.name)
             })
             .catch(function (error) {
                 console.log(error);

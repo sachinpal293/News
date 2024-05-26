@@ -1,16 +1,26 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { setdata } from '@/features/postSlice';
+import { useNavigate } from 'react-router-dom';
 
-function Card() {
+function Card({img, title, description, data, url, category}) {
+  const cardData = {img, title, description, data, url, category}
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleOnClick = ()=>{
+     dispatch(setdata(cardData)); 
+     navigate(`/news/${category}`)
+  }
   return (
-    <div className='w-2/4'>
-        <img src='https://ichef.bbci.co.uk/news/1536/cpsprodpb/8E2B/production/_133259363_thumbnailnewnorth_korea_weapons_to_russia_976x549_index_v2promo.png.webp'
-         width="500px" height="400px"/>
-        <div className='w-2/4'>
+    <div className='w-full pr-1 pl-1 mb-4' onClick={handleOnClick}>
+        <img src={img}
+         width="100%" height="400px"/>
+        <div className='w-full'>
         <div className='text-left font-bold '>
-            North Korean weapons are killing Ukrainians. The implications are far bigger
+            {title}
         </div>
         <div className=' text-wrap'>
-        A missile that crashed in Kharkiv shows the surprising scale at which Pyongyang's weapons are used.
+         {description}
         </div>
         <footer>10 hours | News Aisa</footer>
         </div>

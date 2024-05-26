@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
+
+import VideoInfoCard from '@/components/videoInfoCard'
 
 function Product() {
+  
   return (
-    <div>Product</div>
+    <>
+      <h1>Hello world</h1>
+
+    </>
+
   )
 }
 

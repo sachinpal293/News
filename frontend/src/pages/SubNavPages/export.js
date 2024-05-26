@@ -8,7 +8,7 @@ import Video from "./video.jsx";
 import Travel from "./travel.jsx";
 import Weather from "./weather.jsx";
 import BePatner from "./BePatner.jsx";
-
+import Election from "./Election-2024.jsx";
 
 export {
     Health,
@@ -20,5 +20,6 @@ export {
     Video,
     Travel,
     Weather,
-    BePatner
+    BePatner,
+    Election
 }

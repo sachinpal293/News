@@ -6,9 +6,9 @@ import { uploadCloudinary } from "../utils/cloudinary.js";
 import { User } from "../models/user.model.js";
 
 const uploadPost = asyncHandler(async (req, res) => {
-    const { title, description, url } = req.body;
-    const coverImageLocalPath = req.file?.path;
-    const { _id} =  await User.findById(req.user?._id)
+    const { title, description, url , author } = req.body;
+    
+    const existinguser  =  await User.findById(author)
 
 
     if (!title) {
@@ -16,43 +16,39 @@ const uploadPost = asyncHandler(async (req, res) => {
     }
 
     if (!description) { throw new ApiError(400, "Description is required") }
-    if (!url) { throw new ApiError(400, "Url is required") }
-    if (!coverImageLocalPath) { throw new ApiError(400, "All fields are required") }
-
-
-    const coverImage = await uploadCloudinary(coverImageLocalPath)
-    console.log(coverImage)
-    if (!coverImage) {
-        throw new ApiError(400, "Blog Image is Required");
+    
+    
+    const payload ={
+      ...req.body
     }
-
-    const postNews = await News.create({
-        title,
-        description,
-        url,
-        coverImage:coverImage.url,
-        author : _id
-    })
-
+    const postNews = await News.create(payload)
+    existinguser.blogs.push(postNews)
 
 
     return res.send(postNews);
 })
 
 
-const getAllPosts = asyncHandler(async(req, res)=>{
-     
-    const {_id} = await User.findById(req.user?._id);
-    if(!_id)
+const getAllUserPosts = asyncHandler(async(req, res)=>{
+     const {user} = req.body;
+    const userexist = await User.findById(user);
+    if(!userexist)
         {
             throw new ApiError(400, "User not login")
         }
     
-    const postdata = await News.find({author:_id});
+    const postdata = await News.find({author:userexist});
 
     return res
     .status(200)
     .json(new ApiResponse(200, {postdata},"All post data fetch from database"));
 })
 
-export { uploadPost , getAllPosts};
+ const getAllPosts = asyncHandler(async(req,res)=>{
+    const postdata = await News.find({category:"sports"});
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, {postdata},"All post data fetch from database"));
+ })
+export { uploadPost , getAllPosts, getAllUserPosts};

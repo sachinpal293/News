@@ -12,13 +12,19 @@ import { logout } from '@/features/authSlice';
 
 function Hearder() {
   const isAuth = useSelector(state=> state.auth.isAuthenticated)
+  let auth = isAuth || localStorage.getItem("userId");
+  console.log(auth)
   const username = useSelector(state=> state.auth.user) 
   if(isAuth) 
     {
   console.log(`hum abhi herader.jsx me hai ${isAuth} and username is ${username.username }`)
     }
-  // console.log(username)
+  console.log(username)
  const dispatch = useDispatch();
+ const handlelogout = ()=>{
+  dispatch(logout())
+  localStorage.clear()
+ }
   return (
     <div>
     <header className='h-16 shadow-md bg-white '>
@@ -41,7 +47,8 @@ function Hearder() {
         <div className='flex items-center gap-5'>
 
         < div className='text-3xl text-center cursor-pointer'>
-          <FaRegCircleUser/>
+          {isAuth ? <img src = {username.avatar} width="50px" height="50px"
+          className='rounded-full w-10 h-10'/> : <FaRegCircleUser/>}
            <p className='text-sm text-green-500 font-bold'>{isAuth ? username.username :""}</p>
         </div>
 
@@ -55,7 +62,7 @@ function Hearder() {
         <div>
            {
            isAuth ? <Link to={"/"}>
-           <Button onClick={()=>dispatch(logout())}>Logout</Button>
+           <Button onClick={handlelogout}>Logout</Button>
            </Link>:<Link to={"login"}>
             <Button>Login</Button>
             </Link>

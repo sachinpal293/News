@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import imageTObase64 from '@/helpers/imageTobase64';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 function BePatner() {
-
-  const [isUser, setIsUser] = useState(true)
+  const id = localStorage.getItem("userId");
+  const [isUser, setIsUser] = useState(false)
   const [nav, setNav] = useState("article")
   const [data, setData] = useState({
     title: "",
@@ -18,6 +19,59 @@ function BePatner() {
   
 
 
+// get user blog data
+const getdata = async()=>{
+    await axios.post("//localhost:8080/api/v1/user/getAllPosts",{user:id})
+    .then((response)=>{
+      console.log(response)
+    })
+  }
+
+  useEffect(()=>{
+    getdata();
+  },[])
+  // handle the post news
+  const handlePostSubmit = async(e)=>{
+    e.preventDefault();
+    // getdata()
+    try {
+       await axios.post("//localhost:8080/api/v1/user/postblog", {
+        title: data.title,
+        description: data.description,
+        image: data.img,
+        data:data.data,
+        category : data.category,
+        url:data.url,
+        author: id,
+      }).then((response)=>{
+        console.log(response)
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // handle the Video post by Admin
+  const handlePostVideo = async(e)=>{
+    e.preventDefault();
+    try {
+      await axios.post("//localhost:8080/api/v1/user/upload",{
+        title:data.title,
+        description : data.description,
+        videoFile : data.url,
+        category : data.category,
+        thumbnail : data.img,
+      }).then((response)=>{
+        console.log(response)
+      })
+    } catch (error) {
+      
+    }
+  }
+ 
+  
+
+// handle the changes from input form
   const handleOnChange = (e) => {
     const { name, value } = e.target;
 
@@ -29,6 +83,7 @@ function BePatner() {
     })
   }
 
+  // upload the pics
   const handleUploadPic = async (e) => {
     const file = e.target.files[0];
 
@@ -47,7 +102,7 @@ function BePatner() {
     <>
       {
         isUser ?
-          <div className='conatiner bg-slate-300 mx-10'>
+          <div className='conatiner bg-slate-300 mx-10' >
             <div className=' mx-auto container'>
               <form className='pt-6 flex flex-col gap-2' >
                 <div className='grid'>
@@ -115,7 +170,7 @@ function BePatner() {
                 </div>
 
                 <Button className="bg-red-600 text-white px-6 py-2 w-full max-w-[150px] rounded-full hover:scale-110
-                    transition-all mx-auto block mt-4 mb-4">Submit</Button>
+                    transition-all mx-auto block mt-4 mb-4" onClick={handlePostSubmit}>Submit</Button>
               </form>
             </div>
           </div> :
@@ -207,7 +262,7 @@ function BePatner() {
                   </div>
 
                   <Button className="bg-red-600 text-white px-6 py-2 w-full max-w-[150px] rounded-full hover:scale-110
-                    transition-all mx-auto block mt-4 mb-4">Submit</Button>
+                    transition-all mx-auto block mt-4 mb-4" onClick={handlePostSubmit}>Submit</Button>
                 </form>
               </div>
             </div>:
@@ -260,8 +315,8 @@ function BePatner() {
                       type='text'
                       placeholder='Write Your Article '
                       onChange={handleOnChange}
-                      value={data.thumnail}
-                      name='thumbnail'
+                      value={data.img}
+                      name='img'
                       required
                       className='w-full h-full outline-none bg-transparent' />
                   </div>
@@ -280,7 +335,7 @@ function BePatner() {
 
                 </div>
                 <Button className="bg-red-600 text-white px-6 py-2 w-full max-w-[150px] rounded-full hover:scale-110
-                  transition-all mx-auto block mt-4 mb-4">Submit</Button>
+                  transition-all mx-auto block mt-4 mb-4" onClick={handlePostVideo}>Submit</Button>
               </form>
             </div>
           </div>

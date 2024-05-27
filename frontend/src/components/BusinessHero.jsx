@@ -1,7 +1,9 @@
 import React from 'react'
 import Card from './Card'
 import VideoInfoCard from './videoInfoCard'
+import { useNavigate } from 'react-router-dom'
 const BusinessHero = () => {
+  const navigate = useNavigate()
   return (
     <div className='pl-10 mt-36'>
       <h1 className='ml-1 font-bold text-lg border-t-2 border-black  p-2 mt-20'>Business</h1>
@@ -18,7 +20,7 @@ const BusinessHero = () => {
           <div className='p-7 pt-20'>
             <h1 className='font-bold text-3xl  '>Boeing faces new inquiry over 787 inspection doubts</h1>
             <p className='mb-5'>Boeing told US regulators it might not have properly inspected its 787 Dreamliner jets.</p>
-            <button className='p-2 border-2 border-black font-bold'> See more</button>
+            <button className='p-2 border-2 border-black font-bold' onClick={()=> navigate("/news/business")}> See more</button>
           </div>
         </div>
       </div>

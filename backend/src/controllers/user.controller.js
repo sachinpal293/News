@@ -23,66 +23,45 @@ const generateAccessTokenAndRefereshTokens = async(userId)=>{
 }
 
 const UserRegister = asyncHandler( async (req, res) =>{
-    // res.status(200).json({
-    //     message: "ok"
-    // })
+   try {
+      const { username, name, email, password } = req.body;
+      
+      const existUser = await User.findOne({email});
+      
+      if(existUser)
+      {
+          throw new ApiError(409,"User Already Registed!!")
+      }
 
-    const {email, username, password, name, } = req.body
-    // Another way to check or validate all the fields so that
-    if([name,email,username,password].some((field)=> field?.trim()===""))
-    {
-        throw new ApiError(400,"All fields are required and compulsory")
-    }
-    // Task 1: write code for validation
-    // if(fullname === "")
-    // {
-    //      throw new ApiError(400, "Fullname is required")
-    // }
+      const salt = bcrypt.genSaltSync(10)
+      const hashedPassword = await bcrypt.hashSync(password, salt);
+      if(!hashedPassword)
+          {
+              throw new Error("Something is wrong")
+          }
 
-   const existedUser =  await User.findOne({
-        $or :[{username}, {email}]
-    })
+          const payload = {
+              ...req.body,
+              password : hashedPassword
+          }
+      const user = new User(payload);
+      const saveUser = await user.save();
 
-  if(existedUser)
-  {
-    throw new ApiError(409,"user with email or Username exist")
+      res.status(201).json(
+          {
+             data: saveUser,
+             success: true,
+             error:false,
+             message:"User created successfully"
+          }
+      )
+  } catch (error) {
+      res.json({
+          message:error.message || error,
+          error :true,
+          success : false
+      })
   }
- const avatarLocalPath =  req.files?.avatar[0]?.path ;
-
-  
-  if(!avatarLocalPath)
-  {
-    throw new ApiError(400,"Avatar file is required")
-  }
-
- const avatar= await uploadCloudinary(avatarLocalPath)
- 
-
-//  if(!avatar)
-//  {
-//     throw new ApiError(400, "Avatar required!")
-//  }
- const hashedPassword = await bcrypt.hash(password, 10)
-   
- const user = await User.create({name,
-    avatar:avatar.url || "",
-     email, 
-     username: username.toLowerCase(),
-     password:hashedPassword
-    })
-
- const createdUser =  await User.findById(user._id).select(
-    "-password -refreshToken"
- )
-
- if(!createdUser)
- {
-    throw new ApiError(500, "Something went wrong while registering a user")
- }
-  
- return res.status(201).json(
-    new ApiResponse(200,createdUser, "User registed Successfully")
- )
 })
 
 // Login User

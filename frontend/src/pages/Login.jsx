@@ -34,10 +34,11 @@ function Login() {
             password: data.password
         })
             .then(function (response) {
-                console.log(response)
-                const userdata = {username:response.data.loggedInUser}
-                console.log(userdata)
-                dispatch(login(userdata))
+                console.log(response.data.data.user)
+                // const userdata = {username:response.data.data}
+                // console.log(userdata)
+                localStorage.setItem("userId", response.data.data?.user._id);
+                dispatch(login(response.data.data.user))
                 navigte("/")
                 console.log(response.statusText);
                 console.log(response.data.data.user.name)

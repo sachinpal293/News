@@ -6,11 +6,12 @@ import { uploadCloudinary } from "../utils/cloudinary.js";
 import { User } from "../models/user.model.js";
 
 const uploadVideo = asyncHandler(async (req, res) => {
-  const { _id, role } = await User.findById(req.user?._id)
-  // if (role != "admin") {
-  //   throw new ApiError(400, "You are not eligible to upload")
+  const { title, description ,thumbnail, videoFile, category ,user} = req.body;
+  // const userexist = await User.findById("665358efb5cc14bcd660bdf7")
+  // if (userexist) {
+  //   throw new ApiError(400, "You are not login")
   // }
-  const { title, description ,thumbnail, videoFile} = req.body
+  
   
 
   if (!thumbnail) {
@@ -20,22 +21,18 @@ const uploadVideo = asyncHandler(async (req, res) => {
   if (!videoFile) {
     throw new ApiError(400, "video file is required")
   }
-
+  const payload = {
+    ...req.body
+  }
   const video = await Video.create(
-    {
-      videoFile,
-      thumbnail,
-      title,
-      description,
-      owner: _id
-    }
+      payload
   )
 
   const finaluploadedFile = await Video.findById(video._id)
 
   const { owner } = finaluploadedFile;
 
-  const { username, avatar } = await User.findById(owner);
+  // const { username, avatar } = await User.findById(owner);
 
   if (!finaluploadedFile) {
     throw new ApiError(401, "something went wrong while uploading")
@@ -43,7 +40,7 @@ const uploadVideo = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, { username, avatar }, "Fine this is working upload"))
+    .json(new ApiResponse(200,{finaluploadedFile} , "Fine this is working upload"))
 })
 
 const getAllVideo = asyncHandler(async (req, res) => {

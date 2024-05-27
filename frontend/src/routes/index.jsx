@@ -31,6 +31,7 @@ createRoutesFromElements(
       <Route path="/" element={<App/>}>
       <Route path="" element ={<Home/>}/>
       <Route path="/news" element={<News/>}/>
+      
       <Route path="/login" element={<Login/>}/>
       <Route path="/forgot-password" element={<ForgotPassword/>}/>
       <Route path="/sign-up" element={<Register/>}/>

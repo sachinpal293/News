@@ -17,12 +17,10 @@ function VideoInfoCard({img,title,url}) {
     }
     console.log(link)
   return (
-    <div className='w-full grid grid-cols-2 gap-4'>
-       <img src={img} onClick={handleClick}/>
+    <div className='w-full grid gap-2'>
+       <img src={img} onClick={handleClick} className='px-2'/>
        <div className='' >
         <div onClick={handleClick} className='font-bold'>{title}</div>
-        <p>13 hr ago | News</p>
-        India
        </div>
        
     </div>

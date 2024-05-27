@@ -42,6 +42,12 @@ const userSchema = new Schema(
             required:[true, "Password is required"],
 
         },
+        blogs: [
+            {
+              type: mongoose.Types.ObjectId,
+              ref: "News",
+            },
+          ],
         refreshToken :{
             type:String,
         }
